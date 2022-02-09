@@ -6,13 +6,13 @@ from util import *
 
 ATTACK_START = 3
 ATTACK_HEIGHT = 3
-ATTACK_POWER = 0.49
+ATTACK_POWER = 0.5
 BLOCK_DIFFERENCE_LIMIT = 5
 
 def check_attack(blockchain, honest_prev_block, attacker_prev_block):
     honest_chain = blockchain.get_chain_by_hash(honest_prev_block.hash)
     attacker_chain = blockchain.get_chain_by_hash(attacker_prev_block.hash)
-    print("\rHonest chain length:", len(honest_chain), "\tAttacker chain length:", len(attacker_chain), end="")
+    print("\rHonest chain length: " + str(len(honest_chain)) + "\tAttacker chain length: " + str(len(attacker_chain)), end="")
     if len(attacker_chain) - len(honest_chain) >= BLOCK_DIFFERENCE_LIMIT:
         print("\n\nAttack won!")
         print("Honest chain length:", len(honest_chain))

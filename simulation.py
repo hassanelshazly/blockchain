@@ -7,13 +7,19 @@ from util import *
 ATTACK_START = 5
 ATTACK_HEIGHT = 5
 ATTACK_POWER = 0.49
+BLOCK_DIFFERENCE_LIMIT = 5
 
 def check_attack(blockchain, honest_prev_block, attacker_prev_block):
     honest_chain = blockchain.get_chain_by_hash(honest_prev_block.hash)
     attacker_chain = blockchain.get_chain_by_hash(attacker_prev_block.hash)
     print("\rHonest chain length:", len(honest_chain), "\tAttacker chain length:", len(attacker_chain), end="")
-    if len(attacker_chain) - len(honest_chain) >= 5:
+    if len(attacker_chain) - len(honest_chain) >= BLOCK_DIFFERENCE_LIMIT:
         print("\n\nAttack won!")
+        print("Honest chain length:", len(honest_chain))
+        print("Attacker chain length:", len(attacker_chain))
+        return True
+    elif len(honest_chain) - len(attacker_chain) >= BLOCK_DIFFERENCE_LIMIT:
+        print("\n\nAttack lost!")
         print("Honest chain length:", len(honest_chain))
         print("Attacker chain length:", len(attacker_chain))
         return True
@@ -63,9 +69,9 @@ if __name__ == "__main__":
     print("\nSimulation starts")
     print("Attack power:", ATTACK_POWER, "\n")
 
+    # Here the honest miners and attackers will try to mine blocks with different speeds
     while True:
         try:
-            # Here the honest miners and attackers will try to mine blocks with different speeds
             if rondom_double() > ATTACK_POWER:
                 # honest miners
                 honest_hash = crypto_hash(

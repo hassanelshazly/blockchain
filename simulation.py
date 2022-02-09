@@ -4,8 +4,8 @@ from transaction import Transaction
 from blockchain import *
 from util import *
 
-ATTACK_START = 5
-ATTACK_HEIGHT = 5
+ATTACK_START = 3
+ATTACK_HEIGHT = 3
 ATTACK_POWER = 0.49
 BLOCK_DIFFERENCE_LIMIT = 5
 
@@ -70,6 +70,7 @@ if __name__ == "__main__":
     print("Attack power:", ATTACK_POWER, "\n")
 
     # Here the honest miners and attackers will try to mine blocks with different speeds
+    start_time = time.time_ns()
     while True:
         try:
             if rondom_double() > ATTACK_POWER:
@@ -115,9 +116,11 @@ if __name__ == "__main__":
                 else:
                     attacker_nonce += 1
             if(check_attack(blockchain, honest_prev_block, attacker_prev_block)):
-                print("\nSimulation loops:", simulation_run)
                 break
             simulation_run += 1
         except KeyboardInterrupt:
-            print("\n\nSimulation loops:", simulation_run)
             break
+
+    end_time = time.time_ns()
+    print("\nSimulation loops:", simulation_run)
+    print("Simulation time:", (end_time - start_time) / 1000000000, "seconds")
